@@ -8,6 +8,18 @@ using csharp_android_designer_tool.Properties;
 
 namespace csharp_android_designer_tool.Custom
 {
+    public enum DownOnType
+    {
+        LeftTop,
+        RightTop,
+        LeftBottom,
+        RightBottom,
+        TopMid,
+        LeftMid,
+        BottomMid,
+        RightMid,
+        Normal
+    }
     public class BasePanel:Panel
     {
         MyApplication mApp = MyApplication.getInstance();
@@ -25,7 +37,7 @@ namespace csharp_android_designer_tool.Custom
         int const_height = 10;
         int padding = 1;
 
-
+        DownOnType mDownOnType = DownOnType.Normal; 
         //为实现删除结点功能，加入委托通知上层删除结点
         public delegate void onNodeSelectedDelegate(BasePanel node);
         public onNodeSelectedDelegate m_onNodeSelectedDelegate;
@@ -82,8 +94,10 @@ namespace csharp_android_designer_tool.Custom
 
         protected virtual void BasePanel_MouseUp(object sender, MouseEventArgs e)
         {
-            Console.WriteLine("up ({0},{1})",e.X,e.Y);
+            //Console.WriteLine("up width={0},height={1},left={2},top={3},({4},{5})",
+             //       this.Width, this.Height, this.Left, this.Top, e.X, e.Y);
             isDown = false;
+            mDownOnType = DownOnType.Normal;
             if (m_onNodeSelectedDelegate != null)
             {
                 m_onNodeSelectedDelegate(this);
@@ -93,11 +107,57 @@ namespace csharp_android_designer_tool.Custom
 
         protected virtual void BasePanel_MouseDown(object sender, MouseEventArgs e)
         {
-            Console.WriteLine("down ({0},{1})", e.X, e.Y);
+            //Console.WriteLine("down width={0},height={1},left={2},top={3},({4},{5})",
+             //       this.Width, this.Height, this.Left, this.Top, e.X, e.Y);
+
             isDown = true;
             point_down.X = e.X;
             point_down.Y = e.Y;
-         //   mDragTip.Visible = true;
+
+            if (e.X >= -padding && e.X < const_width - padding   //拽左上角
+                && e.Y >= -padding && e.Y < const_height - padding)
+            {
+                mDownOnType = DownOnType.LeftTop;
+            }
+            else if (e.X >= this.Width - const_width - padding && e.X <= this.Width + padding    //拽右上角
+                  && e.Y >= -padding && e.Y <= const_height)
+            {
+                mDownOnType = DownOnType.RightTop;
+            }
+            else if (e.X >= -padding && e.X < const_width - padding   //拽左下角
+                && e.Y >= this.Height-const_height && e.Y <= this.Height)
+            {
+                mDownOnType = DownOnType.LeftBottom;
+            }
+            else if (e.X >= this.Width - const_width - padding && e.X <= this.Width + padding    //拽右下角
+                  && e.Y >= this.Height-const_height && e.Y <= this.Height)
+            {
+                mDownOnType = DownOnType.RightBottom;
+            }
+            else if (e.X >= (this.Width - const_width) / 2 && e.X <= (this.Width + const_width) / 2 //拽中上
+               && e.Y >= -padding && e.Y <= const_height)  
+            {
+                mDownOnType = DownOnType.TopMid;
+            }
+            else if (e.X >= -padding && e.X < const_width - padding
+                  && e.Y >= (this.Height - const_height)/2 && e.Y <= (this.Height + const_height)/2)  //拽中左
+            {
+                mDownOnType = DownOnType.LeftMid;
+            }
+            else if (e.X >= this.Width - const_width - padding && e.X <= this.Width + padding
+             && e.Y >= (this.Height - const_height) / 2 && e.Y <= (this.Height + const_height) / 2)  //拽中右
+            {
+                mDownOnType = DownOnType.RightMid;
+            }
+            else if (e.X >= (this.Width - const_width) / 2 && e.X <= (this.Width + const_width) / 2
+          && e.Y >= this.Height - const_height && e.Y <= this.Height )  //拽中下
+            {
+                mDownOnType = DownOnType.BottomMid;
+            }
+            else
+            {
+                mDownOnType = DownOnType.Normal;
+            }
         }
 
         protected virtual void BasePanel_MouseMove(object sender, MouseEventArgs e)
@@ -106,29 +166,82 @@ namespace csharp_android_designer_tool.Custom
             if (isDown && !isRoot)
             {
 
+              //  Console.WriteLine("move width={0},height={1},left={2},top={3},({4},{5})",
+              //      this.Width,this.Height,this.Left,this.Top,e.X,e.Y);
+               
                 //计算位移增量
                 int tranx = e.X - point_down.X;
                 int trany = e.Y - point_down.Y;
-
-                if (e.X >= 0 && e.X <= const_width   //拽左上角
-                && e.Y >= 0 && e.Y <= const_height)
+                int width_increment = -tranx;
+                int height_increment = -trany;
+                switch (mDownOnType)
                 {
-                     
-                    Console.WriteLine("drag left top");
-                    this.Left = this.Left + tranx;
-                    this.Top = this.Top + trany;
-                    int width_increment =  -tranx;
-                    int height_increment = -trany;
-
-                    this.Width = this.Width + width_increment;
-                    this.Height = this.Height + height_increment;
+                    case DownOnType.LeftTop:
+                        {
+                            this.Left = this.Left + tranx;
+                            this.Top = this.Top + trany;
+                            this.Width = this.Width + width_increment;
+                            this.Height = this.Height + height_increment;
+                        }
+                        break;
+                    case DownOnType.RightTop:
+                        {
+                            this.Top = this.Top + trany;
+                            this.Width = this.Width - width_increment;
+                            this.Height = this.Height + height_increment;
+                            point_down.X -=  width_increment;
+                        }
+                        break;
+                    case DownOnType.LeftBottom:
+                        {
+                            this.Left = this.Left + tranx;
+                            this.Width = this.Width + width_increment;
+                            this.Height = this.Height - height_increment;
+                            point_down.Y -= height_increment;
+                        }
+                        break;
+                    case DownOnType.RightBottom:
+                        {
+                            this.Width = this.Width - width_increment;
+                            this.Height = this.Height - height_increment;
+                            point_down.X -= width_increment;
+                            point_down.Y -= height_increment;
+                        }
+                        break;
+                    case DownOnType.TopMid:
+                        {
+                            this.Top = this.Top + trany;
+                            this.Height = this.Height + height_increment;
+                        }
+                        break;
+                    case DownOnType.LeftMid:
+                        {
+                            this.Left = this.Left + tranx;
+                            this.Width = this.Width + width_increment;
+                        }
+                        break;
+                    case DownOnType.RightMid:
+                        {
+                            this.Width = this.Width - width_increment;
+                            point_down.X -= width_increment;
+                        }
+                        break;
+                    case DownOnType.BottomMid:
+                        {
+                            this.Height = this.Height - height_increment;
+                            point_down.Y -= height_increment;
+                        }
+                        break;
+                    case DownOnType.Normal:
+                        {
+                            this.Left = this.Left + tranx;
+                            this.Top = this.Top + trany;
+                        }
+                        break;
+                    default:
+                        break;
                 }
-                else
-                {
-                    //改变自身位置
-                    this.Left = this.Left + tranx;
-                    this.Top = this.Top + trany;
-                }
+                Invalidate();
             }
         }
         //显示拖动提示
@@ -159,8 +272,6 @@ namespace csharp_android_designer_tool.Custom
             //e.Graphics.DrawLine(Pens.Black, 0, this.Height / 2, this.Width, this.Height / 2);
             if (!isRoot)
             {
-               
-
                 //绘制拖动指示框
                 //左上角
                 e.Graphics.DrawRectangle(Pens.Black,
