@@ -6,8 +6,21 @@ using System.Collections;
 
 namespace csharp_android_designer_tool.Classes
 {
+    public enum ViewClass
+    {
+        LinearLayout,
+        RelativeLayout,
+        Other
+    }
+    public enum Orientation_Phone
+    { 
+        Vertical,
+        Horizontal
+    }
     public class androidView
     {
+        public static readonly string linearlayout = "LinearLayout";
+        public static readonly string relativelayout = "RelativeLayout";
         public static readonly string layout_width = "android:layout_width";
         public static readonly string layout_height = "android:layout_height";
         public static readonly string padding = "android:padding";
@@ -20,6 +33,9 @@ namespace csharp_android_designer_tool.Classes
         public static readonly string layout_marginTop = "android:layout_marginTop";
         public static readonly string layout_marginRight = "android:layout_marginRight";
         public static readonly string layout_marginBottom = "android:layout_marginBottom";
+        public static readonly string orientation = "android:orientation";
+       
+
         Hashtable ht_properties=new Hashtable();
         protected bool isContainer = true;
         public androidView()

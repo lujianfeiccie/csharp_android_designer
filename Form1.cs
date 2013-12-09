@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using csharp_android_designer_tool.Classes;
 using csharp_android_designer_tool.Custom;
+using System.Xml;
 
 namespace csharp_android_designer_tool
 {
@@ -15,8 +16,8 @@ namespace csharp_android_designer_tool
     {
         MyApplication mApp = MyApplication.getInstance();
 
-        TooBoxButton linearlayout = new TooBoxButton();
-        TooBoxButton relativelayout = new TooBoxButton();
+        ToolBoxButton linearlayout = new ToolBoxButton();
+        ToolBoxButton relativelayout = new ToolBoxButton();
 
         BasePanel panelNodeSelected = null;
         public Form1()
@@ -55,12 +56,14 @@ namespace csharp_android_designer_tool
             resize_pictureBox();
 
             Button label_layout = new Button();
+            
             label_layout.Width = linearlayout.Width;
             label_layout.Height = linearlayout.Height/2;
             label_layout.Text = "容器布局";
             flowLayoutPanel1.Controls.Add(label_layout);
 
             //LinearLayout
+            linearlayout.ViewClass = ViewClass.LinearLayout;
             linearlayout.Text = "LinearLayout";
             linearlayout.MouseUp += new MouseEventHandler(button_MouseUp);
             linearlayout.m_onDragTipShowDelegate += panel_view.showDragTips;
@@ -68,6 +71,7 @@ namespace csharp_android_designer_tool
             
             //RelativeLayout
             relativelayout.Text = "RelativeLayout";
+            relativelayout.ViewClass = ViewClass.RelativeLayout;
             relativelayout.MouseUp += new MouseEventHandler(button_MouseUp);
             relativelayout.m_onDragTipShowDelegate += panel_view.showDragTips;
             flowLayoutPanel1.Controls.Add(relativelayout);
@@ -163,14 +167,62 @@ namespace csharp_android_designer_tool
             aboutDlg = null;
         }
 
+        XmlDocument doc = null;
+        XmlElement root = null;
+        XmlElement data = null;
         private void 输出xmlToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("正在开发...");
+
+            //========================写replace.xml文件==============================
+            doc = new XmlDocument(); // 创建dom对象
+            if (panel_view.mViewClass == ViewClass.RelativeLayout)
+            {
+                root = doc.CreateElement(androidView.relativelayout); // 创建根节点album
+            }
+            else if (panel_view.mViewClass == ViewClass.LinearLayout)
+            {
+                root = doc.CreateElement(androidView.linearlayout); // 创建根节点album
+                root.SetAttribute(androidView.orientation, Orientation_Phone.Vertical.ToString());
+            }
+            root.SetAttribute("xmlns:android", "http://schemas.android.com/apk/res/android");
+            root.SetAttribute("xmlns:tools", "http://schemas.android.com/tools");
+            root.SetAttribute(androidView.layout_width, "match_parent");
+            root.SetAttribute(androidView.layout_height, "match_parent");
+            
+            doc.AppendChild(root);    //  加入到xml document
+            genXmlRecursively(panel_view, root);
+            
+            //MessageBox.Show("正在开发...");
+            //MessageBox.Show(doc.ToString());
+            MessageBox.Show(doc.OuterXml);
+          //  doc.Save(@"c:\data.xml");
         }
 
-        private void splitContainer1_Panel2_Paint(object sender, PaintEventArgs e)
+        //深度优先遍历的同时构建xml树
+        private void genXmlRecursively(System.Windows.Forms.Control control, XmlElement root)
         {
+            if (!control.HasChildren)
+            {
+                return;
+            }
+            else
+            {
+                foreach (Control ctrl in control.Controls)
+                {
+                    if (ctrl is Label ||
+                        ctrl is DragTip)
+                    {
+                        // Console.WriteLine("is picturebox");
 
+                        continue;
+                    }
+                    BasePanel node = (BasePanel)ctrl;
+                    //Console.WriteLine("node={0}",node.mViewClass.ToString());
+                    XmlElement xmlnode = doc.CreateElement(node.mViewClass.ToString()); // 创建根节点album
+                    root.AppendChild(xmlnode);
+                    genXmlRecursively(ctrl, xmlnode);
+                }
+            }
         }
     }
 }

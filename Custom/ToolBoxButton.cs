@@ -5,9 +5,9 @@ using System;
 
 namespace csharp_android_designer_tool.Custom
 {
-    public class TooBoxButton : BaseButton
+    public class ToolBoxButton : BaseButton
     {
-        public delegate void onDragTipShowDelegate(int x, int y,bool visible,bool isInView,bool isUp);
+        public delegate void onDragTipShowDelegate(int x, int y, bool visible, bool isInView, bool isUp, ViewClass mViewClass);
         public onDragTipShowDelegate m_onDragTipShowDelegate=null;
         private readonly int const_width = 100;
         private readonly int const_height = 50;
@@ -16,13 +16,20 @@ namespace csharp_android_designer_tool.Custom
         private Color origin_font_color;
         private bool isDown = false;
         private int panelViewLeft = 0;
+        private ViewClass _ViewClass = ViewClass.Other;
+
+        public ViewClass ViewClass
+        {
+            get { return _ViewClass; }
+            set { _ViewClass = value; }
+        }
 
         public int PanelViewLeft
         {
             get { return panelViewLeft; }
             set { panelViewLeft = value; }
         }
-        public TooBoxButton():base()
+        public ToolBoxButton():base()
         {           
             this.Width = const_width;
             this.Height = const_height;
@@ -48,7 +55,8 @@ namespace csharp_android_designer_tool.Custom
                         x,y);
                     if (m_onDragTipShowDelegate != null)
                     {
-                        m_onDragTipShowDelegate(x, y,true,true,false);
+                       // if(sender is Linear
+                        m_onDragTipShowDelegate(x, y, true, true, false, _ViewClass);
                     }
                 }
                 else {
@@ -70,7 +78,7 @@ namespace csharp_android_designer_tool.Custom
                     x, y);
                 if (m_onDragTipShowDelegate != null)
                 {
-                    m_onDragTipShowDelegate(x, y, false, true,true);
+                    m_onDragTipShowDelegate(x, y, false, true, true, _ViewClass);
                 }
             }
             else
@@ -78,7 +86,7 @@ namespace csharp_android_designer_tool.Custom
                 Console.WriteLine("up out ({0},{1})", e.X, e.Y);
                 if (m_onDragTipShowDelegate != null)
                 {
-                    m_onDragTipShowDelegate(0, 0, false,false,true);
+                    m_onDragTipShowDelegate(0, 0, false, false, true, _ViewClass);
                 }
             }
         }

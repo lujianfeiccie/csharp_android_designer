@@ -1,4 +1,5 @@
 ﻿using csharp_android_designer_tool.Custom;
+using csharp_android_designer_tool.Classes;
 namespace csharp_android_designer_tool
 {
     partial class Form1
@@ -37,6 +38,7 @@ namespace csharp_android_designer_tool
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.panel_view = new csharp_android_designer_tool.Custom.BasePanel();
+            this.panel_view.mViewClass = ViewClass.RelativeLayout;
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.关于ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
@@ -97,7 +99,6 @@ namespace csharp_android_designer_tool
             // 
             this.splitContainer1.Panel2.BackColor = System.Drawing.SystemColors.HotTrack;
             this.splitContainer1.Panel2.Controls.Add(this.panel_view);
-            this.splitContainer1.Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel2_Paint);
             this.splitContainer1.Size = new System.Drawing.Size(708, 367);
             this.splitContainer1.SplitterDistance = 223;
             this.splitContainer1.TabIndex = 1;

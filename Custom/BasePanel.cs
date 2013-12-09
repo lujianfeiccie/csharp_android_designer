@@ -5,6 +5,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Drawing;
 using csharp_android_designer_tool.Properties;
+using csharp_android_designer_tool.Classes;
 
 namespace csharp_android_designer_tool.Custom
 {
@@ -31,7 +32,8 @@ namespace csharp_android_designer_tool.Custom
         bool isRoot = false;
         Point point_down = new Point();
         Label lbl_status_bar = new Label();
-
+        //按钮类型
+        public ViewClass mViewClass = ViewClass.Other;
         //拉伸拖动指示
         int const_width = 10;
         int const_height = 10;
@@ -64,6 +66,7 @@ namespace csharp_android_designer_tool.Custom
             this.MouseDown += new MouseEventHandler(BasePanel_MouseDown);
             this.MouseUp += new MouseEventHandler(BasePanel_MouseUp);
             this.Focus();
+            
             
          //   this.Focus();
          //   this.Resize += new EventHandler(BasePanel_Resize);
@@ -245,7 +248,7 @@ namespace csharp_android_designer_tool.Custom
             }
         }
         //显示拖动提示
-        public virtual void showDragTips(int x,int y,bool visible,bool isInEditView,bool isUp)
+        public virtual void showDragTips(int x, int y, bool visible, bool isInEditView, bool isUp, ViewClass mViewClass)
         {
           //  Console.WriteLine("showDragTips");
             mDragTip.Visible = visible;
@@ -261,6 +264,7 @@ namespace csharp_android_designer_tool.Custom
                 mBasePanel.Width = mApp.EditViewSize.width / 2;
                 mBasePanel.Height = mApp.EditViewSize.width / 3;
                 mBasePanel.isRoot = false;
+                mBasePanel.mViewClass = mViewClass;
                 mBasePanel.m_onNodeSelectedDelegate = m_onNodeSelectedDelegate;
                 this.Controls.Add(mBasePanel);
             }
