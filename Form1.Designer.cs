@@ -33,12 +33,12 @@ namespace csharp_android_designer_tool
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.视图ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.分辨率ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.输出xmlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.panel_view = new csharp_android_designer_tool.Custom.BasePanel();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.关于ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.panel_view = new csharp_android_designer_tool.Custom.BasePanel();
-            this.输出xmlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -65,15 +65,22 @@ namespace csharp_android_designer_tool
             this.视图ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.分辨率ToolStripMenuItem});
             this.视图ToolStripMenuItem.Name = "视图ToolStripMenuItem";
-            this.视图ToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
+            this.视图ToolStripMenuItem.Size = new System.Drawing.Size(41, 20);
             this.视图ToolStripMenuItem.Text = "视图";
             // 
             // 分辨率ToolStripMenuItem
             // 
             this.分辨率ToolStripMenuItem.Name = "分辨率ToolStripMenuItem";
-            this.分辨率ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.分辨率ToolStripMenuItem.Size = new System.Drawing.Size(106, 22);
             this.分辨率ToolStripMenuItem.Text = "分辨率";
             this.分辨率ToolStripMenuItem.Click += new System.EventHandler(this.分辨率ToolStripMenuItem_Click);
+            // 
+            // 输出xmlToolStripMenuItem
+            // 
+            this.输出xmlToolStripMenuItem.Name = "输出xmlToolStripMenuItem";
+            this.输出xmlToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
+            this.输出xmlToolStripMenuItem.Text = "输出xml";
+            this.输出xmlToolStripMenuItem.Click += new System.EventHandler(this.输出xmlToolStripMenuItem_Click);
             // 
             // splitContainer1
             // 
@@ -90,6 +97,7 @@ namespace csharp_android_designer_tool
             // 
             this.splitContainer1.Panel2.BackColor = System.Drawing.SystemColors.HotTrack;
             this.splitContainer1.Panel2.Controls.Add(this.panel_view);
+            this.splitContainer1.Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel2_Paint);
             this.splitContainer1.Size = new System.Drawing.Size(708, 367);
             this.splitContainer1.SplitterDistance = 223;
             this.splitContainer1.TabIndex = 1;
@@ -102,6 +110,16 @@ namespace csharp_android_designer_tool
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(223, 367);
             this.flowLayoutPanel1.TabIndex = 0;
+            // 
+            // panel_view
+            // 
+            this.panel_view.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.panel_view.IsRoot = true;
+            this.panel_view.Location = new System.Drawing.Point(130, 0);
+            this.panel_view.Name = "panel_view";
+            this.panel_view.Size = new System.Drawing.Size(226, 367);
+            this.panel_view.m_onNodeSelectedDelegate += onNodeSelected;
+            this.panel_view.TabIndex = 0;
             // 
             // contextMenuStrip1
             // 
@@ -116,22 +134,6 @@ namespace csharp_android_designer_tool
             this.关于ToolStripMenuItem.Size = new System.Drawing.Size(98, 22);
             this.关于ToolStripMenuItem.Text = "关于";
             this.关于ToolStripMenuItem.Click += new System.EventHandler(this.关于ToolStripMenuItem_Click);
-            // 
-            // panel_view
-            // 
-            this.panel_view.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.panel_view.IsRoot = true;
-            this.panel_view.Location = new System.Drawing.Point(130, 0);
-            this.panel_view.Name = "panel_view";
-            this.panel_view.Size = new System.Drawing.Size(226, 367);
-            this.panel_view.TabIndex = 0;
-            // 
-            // 输出xmlToolStripMenuItem
-            // 
-            this.输出xmlToolStripMenuItem.Name = "输出xmlToolStripMenuItem";
-            this.输出xmlToolStripMenuItem.Size = new System.Drawing.Size(63, 20);
-            this.输出xmlToolStripMenuItem.Text = "输出xml";
-            this.输出xmlToolStripMenuItem.Click += new System.EventHandler(this.输出xmlToolStripMenuItem_Click);
             // 
             // Form1
             // 

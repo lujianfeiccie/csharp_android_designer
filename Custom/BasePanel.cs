@@ -12,11 +12,23 @@ namespace csharp_android_designer_tool.Custom
     {
         MyApplication mApp = MyApplication.getInstance();
         
+
+
         private DragTip mDragTip = new DragTip();
         bool isDown = false;
         bool isRoot = false;
         Point point_down = new Point();
         Label lbl_status_bar = new Label();
+
+        //拉伸拖动指示
+        int const_width = 10;
+        int const_height = 10;
+        int padding = 1;
+
+
+        //为实现删除结点功能，加入委托通知上层删除结点
+        public delegate void onNodeSelectedDelegate(BasePanel node);
+        public onNodeSelectedDelegate m_onNodeSelectedDelegate;
         public bool IsRoot
         {
             get { return isRoot; }
@@ -39,7 +51,8 @@ namespace csharp_android_designer_tool.Custom
             this.MouseMove += new MouseEventHandler(BasePanel_MouseMove);
             this.MouseDown += new MouseEventHandler(BasePanel_MouseDown);
             this.MouseUp += new MouseEventHandler(BasePanel_MouseUp);
-            this.GotFocus += new EventHandler(BasePanel_GotFocus);
+            this.Focus();
+            
          //   this.Focus();
          //   this.Resize += new EventHandler(BasePanel_Resize);
 
@@ -47,13 +60,13 @@ namespace csharp_android_designer_tool.Custom
           //  resize_for_pic_status_bar();
           
         }
-
+       
 
         void BasePanel_Resize(object sender, EventArgs e)
         {
             resize_for_pic_status_bar();
         }
-
+        //调整状态条
         public void resize_for_pic_status_bar()
         {
             if (isRoot)
@@ -71,6 +84,10 @@ namespace csharp_android_designer_tool.Custom
         {
             Console.WriteLine("up ({0},{1})",e.X,e.Y);
             isDown = false;
+            if (m_onNodeSelectedDelegate != null)
+            {
+                m_onNodeSelectedDelegate(this);
+            }
            // mDragTip.Visible = false;
         }
 
@@ -88,21 +105,33 @@ namespace csharp_android_designer_tool.Custom
            
             if (isDown && !isRoot)
             {
-               // mDragTip.Left = e.X;
-               // mDragTip.Top = e.Y;
-                //this.Left = this.Left + e.X+;
-                //this.Top = point_down.Y - e.Y;
-                Console.WriteLine("move ({0},{1}) ({2},{3})", e.X, e.Y,
-                    e.X - point_down.X, e.Y - point_down.Y);
+
                 //计算位移增量
                 int tranx = e.X - point_down.X;
                 int trany = e.Y - point_down.Y;
 
-                //改变自身位置
-                this.Left = this.Left + tranx;
-                this.Top = this.Top + trany;
+                if (e.X >= 0 && e.X <= const_width   //拽左上角
+                && e.Y >= 0 && e.Y <= const_height)
+                {
+                     
+                    Console.WriteLine("drag left top");
+                    this.Left = this.Left + tranx;
+                    this.Top = this.Top + trany;
+                    int width_increment =  -tranx;
+                    int height_increment = -trany;
+
+                    this.Width = this.Width + width_increment;
+                    this.Height = this.Height + height_increment;
+                }
+                else
+                {
+                    //改变自身位置
+                    this.Left = this.Left + tranx;
+                    this.Top = this.Top + trany;
+                }
             }
         }
+        //显示拖动提示
         public virtual void showDragTips(int x,int y,bool visible,bool isInEditView,bool isUp)
         {
           //  Console.WriteLine("showDragTips");
@@ -119,6 +148,7 @@ namespace csharp_android_designer_tool.Custom
                 mBasePanel.Width = mApp.EditViewSize.width / 2;
                 mBasePanel.Height = mApp.EditViewSize.width / 3;
                 mBasePanel.isRoot = false;
+                mBasePanel.m_onNodeSelectedDelegate = m_onNodeSelectedDelegate;
                 this.Controls.Add(mBasePanel);
             }
         }
@@ -129,9 +159,9 @@ namespace csharp_android_designer_tool.Custom
             //e.Graphics.DrawLine(Pens.Black, 0, this.Height / 2, this.Width, this.Height / 2);
             if (!isRoot)
             {
-                int const_width = 10;
-                int const_height = 10;
-                int padding = 1;
+               
+
+                //绘制拖动指示框
                 //左上角
                 e.Graphics.DrawRectangle(Pens.Black,
                      -padding, -padding,
@@ -151,17 +181,31 @@ namespace csharp_android_designer_tool.Custom
                 e.Graphics.DrawRectangle(Pens.Black,
                      - padding, this.Height - const_height - padding,
                      const_width, const_height);
+
+                //上边中间
+                e.Graphics.DrawRectangle(Pens.Black,
+                      (this.Width - const_width)/2-padding, -padding,
+                      const_width, const_height);
+
+                //下边中间
+                e.Graphics.DrawRectangle(Pens.Black,
+                      (this.Width - const_width) / 2 - padding, this.Height-const_height,
+                      const_width, const_height);
+
+
+                //左边中间
+                e.Graphics.DrawRectangle(Pens.Black,
+                        -padding, (this.Height - const_height)/2,
+                        const_width, const_height);
+
+
+                //右边中间
+                e.Graphics.DrawRectangle(Pens.Black,
+                     this.Width - const_width - padding, (this.Height - const_height)/2,
+                     const_width, const_height);
             }
         }
 
-        void BasePanel_GotFocus(object sender, EventArgs e)
-        {
-            Console.WriteLine("BasePanel_GotFocus");
-           
-            /*g.DrawRectangle(Pens.Black,
-                 -const_width / 2, -const_height / 2,
-                 const_width, const_height);*/
-          
-        }
+        
     }
 }

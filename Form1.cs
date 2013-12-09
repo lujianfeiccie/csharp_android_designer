@@ -18,7 +18,7 @@ namespace csharp_android_designer_tool
         TooBoxButton linearlayout = new TooBoxButton();
         TooBoxButton relativelayout = new TooBoxButton();
 
-
+        BasePanel panelNodeSelected = null;
         public Form1()
         {
         
@@ -28,10 +28,30 @@ namespace csharp_android_designer_tool
             mApp.EditViewSize.height = panel_view.Height;
         }
 
+        private void onNodeSelected(BasePanel panelNode)
+        {
+            Console.WriteLine("onNodeSelected");
+            this.panelNodeSelected = panelNode;
+        }
+        //处理按钮消息，包括移除控件
+        protected override bool ProcessDialogKey(Keys keyData)
+        {
+            Console.WriteLine("keycode={0}",keyData);
+            if (keyData == Keys.Back && !panelNodeSelected.IsRoot)
+            {
+                // Console.WriteLine("escape");
+                panel_view.Controls.Remove(this.panelNodeSelected);
+                return true;
+            }
+            return false;
+        }
         private void Form1_Load(object sender, EventArgs e)
         {
             Console.WriteLine("Form1_Load");
+
+
             this.ContextMenuStrip = contextMenuStrip1;
+            this.KeyPreview = true;
             resize_pictureBox();
 
             Button label_layout = new Button();
@@ -146,6 +166,11 @@ namespace csharp_android_designer_tool
         private void 输出xmlToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MessageBox.Show("正在开发...");
+        }
+
+        private void splitContainer1_Panel2_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

@@ -8,3 +8,15 @@ G:\work\study\csharp_android_designer_tool\csharp_android_designer_tool\csharp_a
 G:\work\study\csharp_android_designer_tool\csharp_android_designer_tool\csharp_android_designer_tool\obj\x86\Debug\csharp_android_designer_tool.FormToolBar.resources
 G:\work\study\csharp_android_designer_tool\csharp_android_designer_tool\csharp_android_designer_tool\obj\x86\Debug\csharp_android_designer_tool.Custom.TooBoxButton.resources
 G:\work\study\csharp_android_designer_tool\csharp_android_designer_tool\csharp_android_designer_tool\obj\x86\Debug\csharp_android_designer_tool.FormAbout.resources
+F:\workspace\study\android_designer\csharp_android_designer\obj\x86\Debug\csharp_android_designer_tool.exe
+F:\workspace\study\android_designer\csharp_android_designer\obj\x86\Debug\csharp_android_designer_tool.pdb
+F:\workspace\study\android_designer\csharp_android_designer\bin\Debug\csharp_android_designer_tool.exe
+F:\workspace\study\android_designer\csharp_android_designer\bin\Debug\csharp_android_designer_tool.pdb
+F:\workspace\study\android_designer\csharp_android_designer\obj\x86\Debug\ResolveAssemblyReference.cache
+F:\workspace\study\android_designer\csharp_android_designer\obj\x86\Debug\csharp_android_designer_tool.Custom.TooBoxButton.resources
+F:\workspace\study\android_designer\csharp_android_designer\obj\x86\Debug\csharp_android_designer_tool.Form1.resources
+F:\workspace\study\android_designer\csharp_android_designer\obj\x86\Debug\csharp_android_designer_tool.FormAbout.resources
+F:\workspace\study\android_designer\csharp_android_designer\obj\x86\Debug\csharp_android_designer_tool.FormToolBar.resources
+F:\workspace\study\android_designer\csharp_android_designer\obj\x86\Debug\csharp_android_designer_tool.Properties.Resources.resources
+F:\workspace\study\android_designer\csharp_android_designer\obj\x86\Debug\GenerateResource.read.1.tlog
+F:\workspace\study\android_designer\csharp_android_designer\obj\x86\Debug\GenerateResource.write.1.tlog
