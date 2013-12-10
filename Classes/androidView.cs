@@ -17,23 +17,28 @@ namespace csharp_android_designer_tool.Classes
         Vertical,
         Horizontal
     }
+    public enum LayoutProperty
+    {
+        match_parent,
+        wrap_content
+    }
     public class androidView
     {
         public static readonly string linearlayout = "LinearLayout";
         public static readonly string relativelayout = "RelativeLayout";
-        public static readonly string layout_width = "android:layout_width";
-        public static readonly string layout_height = "android:layout_height";
-        public static readonly string padding = "android:padding";
-        public static readonly string paddingLeft = "android:paddingLeft";
-        public static readonly string paddingTop = "android:paddingTop";
-        public static readonly string paddingRight = "android:paddingRight";
-        public static readonly string paddingBottom = "android:paddingBottom";
-        public static readonly string layout_margin = "android:layout_margin";
-        public static readonly string layout_marginLeft = "android:layout_marginLeft";
-        public static readonly string layout_marginTop = "android:layout_marginTop";
-        public static readonly string layout_marginRight = "android:layout_marginRight";
-        public static readonly string layout_marginBottom = "android:layout_marginBottom";
-        public static readonly string orientation = "android:orientation";
+        public static readonly string layout_width = "xml:layout_width";
+        public static readonly string layout_height = "xml:layout_height";
+        public static readonly string padding = "xml:padding";
+        public static readonly string paddingLeft = "xml:paddingLeft";
+        public static readonly string paddingTop = "xml:paddingTop";
+        public static readonly string paddingRight = "xml:paddingRight";
+        public static readonly string paddingBottom = "xml:paddingBottom";
+        public static readonly string layout_margin = "xml:layout_margin";
+        public static readonly string layout_marginLeft = "xml:layout_marginLeft";
+        public static readonly string layout_marginTop = "xml:layout_marginTop";
+        public static readonly string layout_marginRight = "xml:layout_marginRight";
+        public static readonly string layout_marginBottom = "xml:layout_marginBottom";
+        public static readonly string orientation = "xml:orientation";
        
 
         Hashtable ht_properties=new Hashtable();

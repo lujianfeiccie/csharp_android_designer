@@ -33,11 +33,17 @@ namespace csharp_android_designer_tool
         {
             Console.WriteLine("onNodeSelected");
             this.panelNodeSelected = panelNode;
+            FormProperties propertiesDlg = FormProperties.getInstance();
+            propertiesDlg.Show();
         }
         //处理按钮消息，包括移除控件
         protected override bool ProcessDialogKey(Keys keyData)
         {
             Console.WriteLine("keycode={0}",keyData);
+            if (panelNodeSelected == null)
+            {
+                return false;
+            }
             if (keyData == Keys.Back && !panelNodeSelected.IsRoot)
             {
                 // Console.WriteLine("escape");
@@ -49,8 +55,10 @@ namespace csharp_android_designer_tool
         private void Form1_Load(object sender, EventArgs e)
         {
             Console.WriteLine("Form1_Load");
+            //panel_view
+            panel_view.m_onNodeSelectedDelegate += onNodeSelected;
 
-
+            //Other
             this.ContextMenuStrip = contextMenuStrip1;
             this.KeyPreview = true;
             resize_pictureBox();
@@ -147,7 +155,6 @@ namespace csharp_android_designer_tool
         private void 分辨率ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FormToolBar _FormToolBar = FormToolBar.getInstance();
-            _FormToolBar.TopMost = true;
             if (_FormToolBar.m_onResolutionReceiveDelegate == null)
             {
                 _FormToolBar.m_onResolutionReceiveDelegate += onResolutionReceive;
@@ -175,6 +182,8 @@ namespace csharp_android_designer_tool
 
             //========================写replace.xml文件==============================
             doc = new XmlDocument(); // 创建dom对象
+
+            panel_view.mViewClass = ViewClass.RelativeLayout;
             if (panel_view.mViewClass == ViewClass.RelativeLayout)
             {
                 root = doc.CreateElement(androidView.relativelayout); // 创建根节点album
@@ -186,15 +195,19 @@ namespace csharp_android_designer_tool
             }
             root.SetAttribute("xmlns:android", "http://schemas.android.com/apk/res/android");
             root.SetAttribute("xmlns:tools", "http://schemas.android.com/tools");
-            root.SetAttribute(androidView.layout_width, "match_parent");
-            root.SetAttribute(androidView.layout_height, "match_parent");
+            //root.SetAttribute(androidView.layout_width, "match_parent");
+            root.SetAttribute(androidView.layout_width, LayoutProperty.match_parent.ToString());
+            root.SetAttribute(androidView.layout_height, LayoutProperty.match_parent.ToString());
             
             doc.AppendChild(root);    //  加入到xml document
             genXmlRecursively(panel_view, root);
             
             //MessageBox.Show("正在开发...");
             //MessageBox.Show(doc.ToString());
-            MessageBox.Show(doc.OuterXml);
+            //MessageBox.Show(doc.OuterXml);
+            FormXmlOutput xmloutputdlg = new FormXmlOutput();
+            xmloutputdlg.setText(doc.OuterXml.Replace("xml:","android:"));
+            xmloutputdlg.ShowDialog();
           //  doc.Save(@"c:\data.xml");
         }
 
@@ -217,12 +230,17 @@ namespace csharp_android_designer_tool
                         continue;
                     }
                     BasePanel node = (BasePanel)ctrl;
-                    //Console.WriteLine("node={0}",node.mViewClass.ToString());
+                    Console.WriteLine("node={0}",node.mViewClass.ToString());
                     XmlElement xmlnode = doc.CreateElement(node.mViewClass.ToString()); // 创建根节点album
                     root.AppendChild(xmlnode);
                     genXmlRecursively(ctrl, xmlnode);
                 }
             }
+        }
+
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

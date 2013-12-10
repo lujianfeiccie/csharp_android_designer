@@ -39,7 +39,7 @@ namespace csharp_android_designer_tool
 
         private void FormToolBar_Load(object sender, EventArgs e)
         {
-     
+            this.TopMost = true;
         }
     }
 }
