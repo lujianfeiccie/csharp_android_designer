@@ -37,7 +37,9 @@ namespace csharp_android_designer_tool
             this.MinimizeBox = true;
             //this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             initProperties();
-          //  initListView(listView1);
+            initListView();
+
+         
         }
 
         private void initProperties()
@@ -56,44 +58,74 @@ namespace csharp_android_designer_tool
             ht_properties.Add(androidView.paddingBottom, "");
         }
 
-        private void initListView(ListView listview)
+        private void initListView()
         {
-         /*   listview.Columns.Add("键", 200);
-            listview.Scrollable = true;
-            listview.GridLines = true; //显示表格线
-            listview.View = View.Details;//显示表格细节
 
-            listview.Columns.Add("值", 100);
-            listview.Scrollable = true;
-            listview.GridLines = true; //显示表格线
-            listview.View = View.Details;//显示表格细节
+            DataTable dt = new DataTable();//建立个数据表
+
+            dt.Columns.Add(new DataColumn("属性", typeof(string)));//在表中添加int类型的列
+
+            dt.Columns.Add(new DataColumn("值", typeof(string)));//在表中添加string类型的Name列
+             
+            DataRow dr;//行
+
+         
+          //  dr["id"] = i;
+           // dr["Name"] = "Name" + i;
+           
+           
 
             this.Width = 350;
 
           
             string key = "";
             key = androidView.layout_width;
-            listview.Items.Add(key, key, ht_properties[key].ToString());
-            
+            dr = dt.NewRow();
+            dr["属性"] = key;
+            dr["值"] = ht_properties[key].ToString();
+            dt.Rows.Add(dr);//在表的对象的行里添加此行
+
+           
             key = androidView.layout_height;
-            listview.Items.Add(key, key, ht_properties[key].ToString());
+            dr = dt.NewRow();
+            dr["属性"] = key;
+            dr["值"] = ht_properties[key].ToString();
+            dt.Rows.Add(dr);//在表的对象的行里添加此行
 
             key = androidView.layout_margin;
-            listview.Items.Add(key, key, ht_properties[key].ToString());
+            dr = dt.NewRow();
+            dr["属性"] = key;
+            dr["值"] = ht_properties[key].ToString();
+            dt.Rows.Add(dr);//在表的对象的行里添加此行
 
             key = androidView.layout_marginLeft;
-            listview.Items.Add(key, key, ht_properties[key].ToString());
+            dr = dt.NewRow();
+            dr["属性"] = key;
+            dr["值"] = ht_properties[key].ToString();
+            dt.Rows.Add(dr);//在表的对象的行里添加此行
 
             key = androidView.layout_marginRight;
-            listview.Items.Add(key, key, ht_properties[key].ToString());
+            dr = dt.NewRow();
+            dr["属性"] = key;
+            dr["值"] = ht_properties[key].ToString();
+            dt.Rows.Add(dr);//在表的对象的行里添加此行
 
             key = androidView.layout_marginTop;
-            listview.Items.Add(key, key, ht_properties[key].ToString());
+            dr = dt.NewRow();
+            dr["属性"] = key;
+            dr["值"] = ht_properties[key].ToString();
+            dt.Rows.Add(dr);//在表的对象的行里添加此行
 
             key = androidView.layout_marginBottom;
-            listview.Items.Add(key, key, ht_properties[key].ToString());
-            */
+            dr = dt.NewRow();
+            dr["属性"] = key;
+            dr["值"] = ht_properties[key].ToString();
+            dt.Rows.Add(dr);//在表的对象的行里添加此行
 
+
+            dataGridView1.DataSource = dt;
+            dataGridView1.Columns[0].Width = 200;
+            dataGridView1.Columns[0].ReadOnly = true;
         }
 
     }
