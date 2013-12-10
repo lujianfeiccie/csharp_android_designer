@@ -23,7 +23,7 @@ namespace csharp_android_designer_tool
         }
 
         public static FormToolBar getInstance(){
-            if (mFormToolBar == null)
+            if (mFormToolBar == null || mFormToolBar.IsDisposed)
             {
                 mFormToolBar = new FormToolBar();
             }
