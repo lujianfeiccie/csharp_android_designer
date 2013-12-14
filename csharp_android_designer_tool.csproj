@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\AndroidProperties.cs" />
     <Compile Include="Classes\androidView.cs" />
     <Compile Include="Classes\PhoneSize.cs" />
     <Compile Include="Custom\BaseButton.cs">
@@ -54,7 +55,7 @@
     <Compile Include="Custom\BasePanel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Custom\MyApplication.cs" />
+    <Compile Include="Classes\MyApplication.cs" />
     <Compile Include="Custom\DragTip.cs">
       <SubType>Component</SubType>
     </Compile>

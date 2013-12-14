@@ -22,7 +22,7 @@ namespace csharp_android_designer_tool
 
         private void FormXmlOutput_Load(object sender, EventArgs e)
         {
-
+            this.TopLevel = true;
         }
     }
 }

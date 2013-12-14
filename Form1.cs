@@ -28,12 +28,13 @@ namespace csharp_android_designer_tool
            
             mApp.EditViewSize.height = panel_view.Height;
         }
-
-        private void onNodeSelected(BasePanel panelNode)
+        AndroidProperties properties = null;
+        private void onNodeSelected(BasePanel panelNode,AndroidProperties properties)
         {
             Console.WriteLine("onNodeSelected");
             this.panelNodeSelected = panelNode;
             FormProperties propertiesDlg = FormProperties.getInstance();
+            propertiesDlg.Properties = properties;
             propertiesDlg.Show();
         }
         //处理按钮消息，包括移除控件
@@ -55,11 +56,11 @@ namespace csharp_android_designer_tool
         private void Form1_Load(object sender, EventArgs e)
         {
             Console.WriteLine("Form1_Load");
+            this.WindowState = FormWindowState.Maximized;
             //panel_view
             panel_view.m_onNodeSelectedDelegate += onNodeSelected;
 
-            //Other
-            this.ContextMenuStrip = contextMenuStrip1;
+            
             this.KeyPreview = true;
             resize_pictureBox();
 
@@ -167,12 +168,7 @@ namespace csharp_android_designer_tool
        //     MessageBox.Show(BaseProperties.a.ToString());
         }
 
-        private void 关于ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            FormAbout aboutDlg = new FormAbout();
-            aboutDlg.ShowDialog();
-            aboutDlg = null;
-        }
+      
 
         XmlDocument doc = null;
         XmlElement root = null;
@@ -232,6 +228,12 @@ namespace csharp_android_designer_tool
                     BasePanel node = (BasePanel)ctrl;
                     Console.WriteLine("node={0}",node.mViewClass.ToString());
                     XmlElement xmlnode = doc.CreateElement(node.mViewClass.ToString()); // 创建根节点album
+                    xmlnode.SetAttribute(androidView.layout_width,panelNodeSelected.Properties.Properties[androidView.layout_width].ToString());
+                    xmlnode.SetAttribute(androidView.layout_height, panelNodeSelected.Properties.Properties[androidView.layout_height].ToString());
+                    if (node.mViewClass == ViewClass.LinearLayout)
+                    {
+                        xmlnode.SetAttribute(androidView.orientation, Orientation_Phone.Vertical.ToString().ToLower());
+                    }
                     root.AppendChild(xmlnode);
                     genXmlRecursively(ctrl, xmlnode);
                 }
@@ -241,6 +243,13 @@ namespace csharp_android_designer_tool
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void 关于ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FormAbout dlg = new FormAbout();
+            dlg.ShowDialog();
+            dlg = null;
         }
     }
 }

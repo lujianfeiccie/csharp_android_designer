@@ -39,9 +39,17 @@ namespace csharp_android_designer_tool.Custom
         int const_height = 10;
         int padding = 1;
 
-        DownOnType mDownOnType = DownOnType.Normal; 
+        DownOnType mDownOnType = DownOnType.Normal;
+
+        AndroidProperties properties = new AndroidProperties();
+
+        public AndroidProperties Properties
+        {
+            get { return properties; }
+            set { properties = value; }
+        }
         //为实现删除结点功能，加入委托通知上层删除结点
-        public delegate void onNodeSelectedDelegate(BasePanel node);
+        public delegate void onNodeSelectedDelegate(BasePanel node, AndroidProperties properties);
         public onNodeSelectedDelegate m_onNodeSelectedDelegate;
         public bool IsRoot
         {
@@ -103,7 +111,9 @@ namespace csharp_android_designer_tool.Custom
             mDownOnType = DownOnType.Normal;
             if (m_onNodeSelectedDelegate != null)
             {
-                m_onNodeSelectedDelegate(this);
+                properties.Properties[androidView.layout_width]=this.Width;
+                properties.Properties[androidView.layout_height] = this.Height;
+                m_onNodeSelectedDelegate(this,properties);
             }
            // mDragTip.Visible = false;
         }
